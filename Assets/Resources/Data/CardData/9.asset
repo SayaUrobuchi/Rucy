@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbfbb2f07d1873b4c94bd0fa7ed77522, type: 3}
+  m_Name: 9
+  m_EditorClassIdentifier: 
+  Type: 0
+  Description: "\u653B\u64CA\u6642\u4F7F\u5C0D\u65B9\u51CD\u7D50"
+  Mana: 9
+  Attack: 9
+  Health: 9
+  CardImage: {fileID: 2800000, guid: edbff219559c1894f841ed47a2b5993b, type: 3}
+  UV:
+    serializedVersion: 2
+    x: 0.1
+    y: 0.62
+    width: 0.67196536
+    height: 0.31
