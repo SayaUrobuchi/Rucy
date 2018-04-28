@@ -24,6 +24,12 @@ public class BattleMaid : MonoBehaviour
         BattleEnd, 
     }
 
+    [Header("Reference")]
+    public AudioSource BGMPlayer;
+
+    [Header("Field")]
+    public AudioClip BGM;
+
     private State state;
 
 	// Use this for initialization
@@ -59,5 +65,7 @@ public class BattleMaid : MonoBehaviour
 
     private void Init()
     {
+        BGMPlayer.clip = BGM;
+        BGMPlayer.Play();
     }
 }
