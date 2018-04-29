@@ -9,17 +9,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbfbb2f07d1873b4c94bd0fa7ed77522, type: 3}
-  m_Name: NewCardData 1
+  m_Name: Tewi
   m_EditorClassIdentifier: 
   Type: 0
-  Description: 
-  Mana: 1
-  Attack: 0
-  Health: 0
-  CardImage: {fileID: 0}
+  Description: "\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u4E00\u4E8C"
+  Mana: 2
+  Attack: 1
+  Health: 3
+  CardImage: {fileID: 2800000, guid: 0f83cddde90608843b082356846961fb, type: 3}
   UV:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
+    x: 0.2
+    y: 0.62
+    width: 0.56250006
+    height: 0.33
