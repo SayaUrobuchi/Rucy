@@ -16,9 +16,28 @@ public class BattleCardMaid : MonoBehaviour
     public GameObject HealthPanel;
     public UVMaid CardLook;
 
-    private int Mana;
-    private int Attack;
-    private int Health;
+    private int mana;
+    private int atk;
+    private int hp;
+
+    private bool casting;
+    private BattleMaid.CardState state;
+
+    public BattleMaid.CardState State
+    {
+        get
+        {
+            return state;
+        }
+    }
+
+    public int CostMana
+    {
+        get
+        {
+            return Data.Mana;
+        }
+    }
 
     public void SetShow(bool show)
     {
@@ -34,22 +53,29 @@ public class BattleCardMaid : MonoBehaviour
     public void SetCard(BattleCardMaid maid)
     {
         Data = maid.Data;
-        Mana = maid.Mana;
-        Attack = maid.Attack;
-        Health = maid.Health;
+        mana = maid.mana;
+        atk = maid.atk;
+        hp = maid.hp;
+        casting = maid.casting;
+        state = maid.state;
         Refresh();
+    }
+
+    public void SetState(BattleMaid.CardState s)
+    {
+        state = s;
     }
 
     private void Refresh()
     {
         DescText.text = Data.Description;
-        ManaText.text = Mana.ToString();
+        ManaText.text = mana.ToString();
         if (Data.Type == CardType.Monster)
         {
             AttackPanel.SetActive(true);
             HealthPanel.SetActive(true);
-            AttackText.text = Attack.ToString();
-            HealthText.text = Health.ToString();
+            AttackText.text = atk.ToString();
+            HealthText.text = hp.ToString();
         }
         else
         {
@@ -85,9 +111,9 @@ public class BattleCardMaid : MonoBehaviour
     [ContextMenu("ShowCard")]
     public void ShowCard()
     {
-        Mana = Data.Mana;
-        Attack = Data.Attack;
-        Health = Data.Health;
+        mana = Data.Mana;
+        atk = Data.Attack;
+        hp = Data.Health;
         Refresh();
     }
 

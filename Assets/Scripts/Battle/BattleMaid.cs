@@ -30,16 +30,31 @@ public class BattleMaid : MonoBehaviour
         Opponent, 
     }
 
+    public enum CardState
+    {
+        None, 
+        CardPool, 
+        Hand, 
+        Field, 
+    }
+
+    public const int MaxCommand = 3;
+    public const int MaxMana = 10;
+
     [Header("Reference")]
     public AudioSource BGMPlayer;
     public BattleCardMaid CardDetail;
     public RectTransform LeftPanel;
+    public RectTransform LeftCommandPanel;
+    public CommandMaid TurnEndCommand;
 
     [Header("Field")]
     public AudioClip BGM;
 
     [Header("Template")]
     public BattleCardMaid CardTemplate;
+    public CommandMaid CommandTemplate;
+    public ManaBlockMaid ManaBlockTemplate;
 
     [Header("Player")]
     public Player SelfPlayer;
@@ -48,6 +63,7 @@ public class BattleMaid : MonoBehaviour
     private State state;
     private Turn currentTurn;
     private BattleCardMaid selectedCard;
+    private CommandMaid[] commands = new CommandMaid[MaxCommand];
 
     public BattleCardMaid CurrentSelectedCard
     {
@@ -97,13 +113,28 @@ public class BattleMaid : MonoBehaviour
         BGMPlayer.clip = BGM;
         BGMPlayer.Play();
         //SetLeftPanelVisible(false);
+        SelfPlayer.HandGroup.ClearChildren();
+        SelfPlayer.MonsterGroup.ClearChildren();
+        LeftCommandPanel.Clear();
 
-        SelfPlayer.CardPool = new List<CardData>();
+        SelfPlayer.Init();
+        SelfPlayer.CardPool.Clear();
         for (int i = 0; i < 30; i++)
         {
             SelfPlayer.CardPool.Add(CardPool.Cards[Random.Range(0, CardPool.Cards.Count)].Value);
         }
         SelfPlayer.DrawCard(5);
+        SelfPlayer.UpdateState();
+        OpponentPlayer.Init();
+        OpponentPlayer.UpdateState();
+
+        for (int i = 0; i < MaxCommand; i++)
+        {
+            commands[i] = Instantiate(CommandTemplate);
+            commands[i].transform.SetParent(LeftCommandPanel);
+            commands[i].SetVisible(false);
+        }
+        TurnEndCommand.SetCommand(CommandMaid.State.TurnEnd);
     }
 
     public BattleCardMaid GenerateCard(CardData data, RectTransform Container)
@@ -112,6 +143,21 @@ public class BattleMaid : MonoBehaviour
         maid.SetCard(data);
         maid.transform.SetParent(Container);
         return maid;
+    }
+
+    public bool IsSummonPossible(Player p, BattleCardMaid c)
+    {
+        return p.CurrentMana >= c.CostMana;
+    }
+
+    public bool IsAttackPossible(Player p, BattleCardMaid c)
+    {
+        return false;
+    }
+
+    public bool IsCastPossible(Player p, BattleCardMaid c)
+    {
+        return p.CurrentMana >= c.CostMana;
     }
 
     public void SetSelectedCard(BattleCardMaid maid)
@@ -132,7 +178,46 @@ public class BattleMaid : MonoBehaviour
             maid = selectedCard;
         }
         CardDetail.SetCard(maid);
+        SetCommand(maid);
         SetLeftPanelVisible(true);
+    }
+
+    public void SetCommand(BattleCardMaid maid)
+    {
+        int idx = 0;
+        SelfPlayer.SetManaCostEstimate(0);
+        if (maid.Data.Type == CardType.Monster)
+        {
+            if (maid.State == CardState.Hand)
+            {
+                SetCommand(idx++, CommandMaid.State.Summon, IsSummonPossible(SelfPlayer, maid));
+                if (IsSummonPossible(SelfPlayer, maid))
+                {
+                    SelfPlayer.SetManaCostEstimate(maid.CostMana);
+                }
+            }
+            else if (maid.State == CardState.Field)
+            {
+                SetCommand(idx++, CommandMaid.State.Attack, IsAttackPossible(SelfPlayer, maid));
+            }
+        }
+        else if (maid.Data.Type == CardType.Spell)
+        {
+            SetCommand(idx++, CommandMaid.State.Cast, IsCastPossible(SelfPlayer, maid));
+            if (IsCastPossible(SelfPlayer, maid))
+            {
+                SelfPlayer.SetManaCostEstimate(maid.CostMana);
+            }
+        }
+        while (idx < MaxCommand)
+        {
+            commands[idx++].SetCommand(CommandMaid.State.None);
+        }
+    }
+
+    public void SetCommand(int idx, CommandMaid.State cmd, bool clickable = true)
+    {
+        commands[idx].SetCommand(cmd, clickable);
     }
 
     public void SetLeftPanelVisible(bool value)
