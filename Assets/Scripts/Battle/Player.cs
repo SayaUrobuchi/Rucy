@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
 
     private ManaBlockMaid[] manaBlocks = new ManaBlockMaid[BattleMaid.MaxMana];
     private int manaCostEstimate = 0;
+    private int currentCardIdx = 0;
 
     public void Init()
     {
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
             manaBlocks[i] = Instantiate(BattleMaid.Summon.ManaBlockTemplate);
             manaBlocks[i].transform.SetParent(ManaGroup.transform);
         }
+        currentCardIdx = 0;
     }
 
     public void SetManaCostEstimate(int e)
@@ -64,15 +66,33 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void UseCard(BattleCardMaid maid, CommandMaid.State cmd)
+    {
+        switch (cmd)
+        {
+        case CommandMaid.State.Summon:
+            CurrentMana -= maid.CostMana;
+            Hand.Remove(maid);
+            maid.SetState(BattleMaid.CardState.Field);
+            Monsters.Add(maid);
+            maid.transform.SetParent(MonsterGroup.transform);
+            break;
+        case CommandMaid.State.Cast:
+            break;
+        case CommandMaid.State.Attack:
+            break;
+        }
+    }
+
     public void DrawCard(int count = 1)
     {
         for (int i = 0; i < count; i++)
         {
-            int dice = Random.Range(0, CardPool.Count);
-            CardData card = CardPool[dice];
-            CardPool.RemoveAt(dice);
+            CardData card = CardPool[currentCardIdx];
+            currentCardIdx++;
             BattleCardMaid maid = BattleMaid.Summon.GenerateCard(card, HandGroup.transform as RectTransform);
             maid.SetState(BattleMaid.CardState.Hand);
+            maid.Owner = this;
             Hand.Add(maid);
         }
     }

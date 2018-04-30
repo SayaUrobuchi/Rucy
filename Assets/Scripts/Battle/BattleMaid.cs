@@ -121,7 +121,8 @@ public class BattleMaid : MonoBehaviour
         SelfPlayer.CardPool.Clear();
         for (int i = 0; i < 30; i++)
         {
-            SelfPlayer.CardPool.Add(CardPool.Cards[Random.Range(0, CardPool.Cards.Count)].Value);
+            CardData card = CardPool.Cards[Random.Range(0, CardPool.Cards.Count)].Value;
+            SelfPlayer.CardPool.Add(card);
         }
         SelfPlayer.DrawCard(5);
         SelfPlayer.UpdateState();
@@ -134,7 +135,7 @@ public class BattleMaid : MonoBehaviour
             commands[i].transform.SetParent(LeftCommandPanel);
             commands[i].SetVisible(false);
         }
-        TurnEndCommand.SetCommand(CommandMaid.State.TurnEnd);
+        TurnEndCommand.SetCommand(CommandMaid.State.TurnEnd, true);
     }
 
     public BattleCardMaid GenerateCard(CardData data, RectTransform Container)
@@ -143,6 +144,35 @@ public class BattleMaid : MonoBehaviour
         maid.SetCard(data);
         maid.transform.SetParent(Container);
         return maid;
+    }
+
+    public void CommandExecute(BattleCardMaid maid, CommandMaid.State cmd)
+    {
+        if (maid == null)
+        {
+            maid = CurrentSelectedCard;
+        }
+        if (maid == null || cmd == CommandMaid.State.None)
+        {
+            return;
+        }
+        switch (cmd)
+        {
+        case CommandMaid.State.TurnEnd:
+            break;
+        case CommandMaid.State.Cancel:
+            break;
+        case CommandMaid.State.Attack:
+        case CommandMaid.State.Summon:
+        case CommandMaid.State.Cast:
+            maid.Owner.UseCard(maid, cmd);
+            break;
+        }
+        maid.Owner.UpdateState();
+        if (maid == CurrentSelectedCard)
+        {
+            SetCommand(maid);
+        }
     }
 
     public bool IsSummonPossible(Player p, BattleCardMaid c)
@@ -223,6 +253,6 @@ public class BattleMaid : MonoBehaviour
     public void SetLeftPanelVisible(bool value)
     {
         CardDetail.SetShow(value);
-        LeftPanel.gameObject.SetActive(value);
+        LeftCommandPanel.gameObject.SetActive(value);
     }
 }

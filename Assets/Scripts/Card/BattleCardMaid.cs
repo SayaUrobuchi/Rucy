@@ -22,6 +22,7 @@ public class BattleCardMaid : MonoBehaviour
 
     private bool casting;
     private BattleMaid.CardState state;
+    private Player owner;
 
     public BattleMaid.CardState State
     {
@@ -36,6 +37,19 @@ public class BattleCardMaid : MonoBehaviour
         get
         {
             return Data.Mana;
+        }
+    }
+
+    public Player Owner
+    {
+        get
+        {
+            return owner;
+        }
+
+        set
+        {
+            owner = value;
         }
     }
 

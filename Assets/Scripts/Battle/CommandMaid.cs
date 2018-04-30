@@ -35,6 +35,7 @@ public class CommandMaid : MonoBehaviour
     private Image image;
     private Button button;
     private Dictionary<State, Item> table = new Dictionary<State, Item>();
+    private State cmd;
 
     private void Init()
     {
@@ -55,9 +56,10 @@ public class CommandMaid : MonoBehaviour
         }
     }
     
-    public void SetCommand(State cmd, bool clickable = false)
+    public void SetCommand(State command, bool clickable = false)
     {
         Init();
+        cmd = command;
         if (cmd == State.None)
         {
             this.SetVisible(false);
@@ -70,5 +72,10 @@ public class CommandMaid : MonoBehaviour
             CommandText.text = item.CommandName;
             button.interactable = (item.Clickable && clickable);
         }
+    }
+
+    public void OnClick()
+    {
+        BattleMaid.Summon.CommandExecute(null, cmd);
     }
 }
