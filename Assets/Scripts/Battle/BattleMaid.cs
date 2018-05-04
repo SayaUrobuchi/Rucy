@@ -149,12 +149,16 @@ public class BattleMaid : MonoBehaviour
             maid.Owner = OpponentPlayer;
             OpponentPlayer.CardPool.Add(maid);
         }
-        OpponentPlayer.DrawCard(5);
-        OpponentPlayer.SummonCard(OpponentPlayer.Hand[4]);
-        OpponentPlayer.SummonCard(OpponentPlayer.Hand[3]);
-        OpponentPlayer.SummonCard(OpponentPlayer.Hand[2]);
-        OpponentPlayer.SummonCard(OpponentPlayer.Hand[1]);
-        OpponentPlayer.SummonCard(OpponentPlayer.Hand[0]);
+        OpponentPlayer.DrawCard(9);
+        int c = 0;
+        for (int i = 8; i >= 0 && c < 5; i--)
+        {
+            if (OpponentPlayer.Hand[i].Data.Type == CardType.Monster)
+            {
+                OpponentPlayer.SummonCard(OpponentPlayer.Hand[i]);
+                ++c;
+            }
+        }
         OpponentPlayer.CurrentMana = 1;
         OpponentPlayer.UpdateState();
 
@@ -173,44 +177,6 @@ public class BattleMaid : MonoBehaviour
         maid.SetCard(data);
         maid.transform.SetParent(Container);
         return maid;
-    }
-
-    public void CommandExecute(BattleCardMaid maid, CommandMaid.State cmd)
-    {
-        if (maid == null)
-        {
-            maid = CurrentSelectedCard;
-        }
-        if (maid == null || cmd == CommandMaid.State.None)
-        {
-            return;
-        }
-        switch (cmd)
-        {
-        case CommandMaid.State.TurnEnd:
-            break;
-        case CommandMaid.State.Cancel:
-            break;
-        case CommandMaid.State.Attack:
-            currentCmd = CommandMaid.State.Attacking;
-            currentSelector = new MonsterAttackTargetSelector();
-            List<ITargetable> targets = currentSelector.Eval(maid.Owner);
-            for (int i = 0; i < targets.Count; i++)
-            {
-                targets[i].SetTargetable();
-            }
-            break;
-        case CommandMaid.State.Cast:
-            break;
-        case CommandMaid.State.Summon:
-            maid.Owner.SummonCard(maid);
-            break;
-        }
-        maid.Owner.UpdateState();
-        if (maid == CurrentSelectedCard)
-        {
-            SetCommand(maid);
-        }
     }
 
     public bool IsSummonPossible(Player p, BattleCardMaid c)
@@ -275,6 +241,48 @@ public class BattleMaid : MonoBehaviour
         }
     }
 
+    public void CommandExecute(BattleCardMaid maid, CommandMaid.State cmd)
+    {
+        if (maid == null)
+        {
+            maid = CurrentSelectedCard;
+        }
+        if (maid == null || cmd == CommandMaid.State.None)
+        {
+            return;
+        }
+        switch (cmd)
+        {
+        case CommandMaid.State.TurnEnd:
+            break;
+        case CommandMaid.State.Cancel:
+            {
+                currentCmd = CommandMaid.State.None;
+                ClearSetTargetable();
+                break;
+            }
+        case CommandMaid.State.Attack:
+            currentCmd = CommandMaid.State.Attacking;
+            currentSelector = new MonsterAttackTargetSelector();
+            List<ITargetable> targets = currentSelector.Eval(maid.Owner);
+            for (int i = 0; i < targets.Count; i++)
+            {
+                targets[i].SetTargetable();
+            }
+            break;
+        case CommandMaid.State.Cast:
+            break;
+        case CommandMaid.State.Summon:
+            maid.Owner.SummonCard(maid);
+            break;
+        }
+        maid.Owner.UpdateState();
+        if (maid == CurrentSelectedCard)
+        {
+            SetCommand(maid);
+        }
+    }
+
     public void OnAttack(IAttacker attacker, ITargetable defender)
     {
         AttackBattleAction action = attacker.Attack(defender);
@@ -316,6 +324,7 @@ public class BattleMaid : MonoBehaviour
                 {
                     OnAttack(selectedCard, maid);
                     currentCmd = CommandMaid.State.None;
+                    ClearSetTargetable();
                 }
                 break;
             }
@@ -348,7 +357,11 @@ public class BattleMaid : MonoBehaviour
     {
         int idx = 0;
         SelfPlayer.SetManaCostEstimate(0);
-        if (maid.Owner == SelfPlayer)
+        if ((currentCmd & (CommandMaid.State.Attacking | CommandMaid.State.Casting | CommandMaid.State.Summoning)) != 0)
+        {
+            SetCommand(idx++, CommandMaid.State.Cancel, true);
+        }
+        else if (maid.Owner == SelfPlayer)
         {
             if (maid.Data.Type == CardType.Monster)
             {

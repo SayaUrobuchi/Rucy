@@ -5276,45 +5276,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114472559514222144, guid: f0fd0309b57f6004186f42216696106d,
-        type: 2}
-      propertyPath: Data
-      value: 
-      objectReference: {fileID: 11400000, guid: 0dc71808f7f070f4daf3d6819be7b45c,
-        type: 2}
-    - target: {fileID: 1573838307975096, guid: f0fd0309b57f6004186f42216696106d, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1427331380190954, guid: f0fd0309b57f6004186f42216696106d, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114709693037571514, guid: f0fd0309b57f6004186f42216696106d,
-        type: 2}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: 0ae4cd258b3bd564cae4fe7f61664ebe, type: 3}
-    - target: {fileID: 114709693037571514, guid: f0fd0309b57f6004186f42216696106d,
-        type: 2}
-      propertyPath: m_UVRect.x
-      value: 0.24
-      objectReference: {fileID: 0}
-    - target: {fileID: 114709693037571514, guid: f0fd0309b57f6004186f42216696106d,
-        type: 2}
-      propertyPath: m_UVRect.y
-      value: 0.72
-      objectReference: {fileID: 0}
-    - target: {fileID: 114709693037571514, guid: f0fd0309b57f6004186f42216696106d,
-        type: 2}
-      propertyPath: m_UVRect.width
-      value: 0.4730713
-      objectReference: {fileID: 0}
-    - target: {fileID: 114709693037571514, guid: f0fd0309b57f6004186f42216696106d,
-        type: 2}
-      propertyPath: m_UVRect.height
-      value: 0.26
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0fd0309b57f6004186f42216696106d, type: 2}
   m_IsPrefabParent: 0
