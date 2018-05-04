@@ -10,13 +10,17 @@ public class Player : MonoBehaviour
     public int CurrentMana;
     public int MaxMana;
     public int Armor;
-    public List<CardData> CardPool = new List<CardData>();
+    public List<BattleCardMaid> CardPool = new List<BattleCardMaid>();
     public List<BattleCardMaid> Hand = new List<BattleCardMaid>();
     public List<BattleCardMaid> Monsters = new List<BattleCardMaid>();
+    public List<BattleCardMaid> Tomb = new List<BattleCardMaid>();
+    public BattleMaid.Turn Side;
 
     [Header("References")]
+    public LayoutGroup CardPoolGroup;
     public LayoutGroup HandGroup;
     public LayoutGroup MonsterGroup;
+    public LayoutGroup TombGroup;
     public Text HPText;
     public Text ArmorText;
     public RectTransform ArmorPanel;
@@ -66,33 +70,23 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void UseCard(BattleCardMaid maid, CommandMaid.State cmd)
+    public void SummonCard(BattleCardMaid maid)
     {
-        switch (cmd)
-        {
-        case CommandMaid.State.Summon:
-            CurrentMana -= maid.CostMana;
-            Hand.Remove(maid);
-            maid.SetState(BattleMaid.CardState.Field);
-            Monsters.Add(maid);
-            maid.transform.SetParent(MonsterGroup.transform);
-            break;
-        case CommandMaid.State.Cast:
-            break;
-        case CommandMaid.State.Attack:
-            break;
-        }
+        CurrentMana -= maid.CostMana;
+        Hand.Remove(maid);
+        maid.SetState(BattleMaid.CardState.Field);
+        Monsters.Add(maid);
+        maid.transform.SetParent(MonsterGroup.transform);
     }
 
     public void DrawCard(int count = 1)
     {
         for (int i = 0; i < count; i++)
         {
-            CardData card = CardPool[currentCardIdx];
-            currentCardIdx++;
-            BattleCardMaid maid = BattleMaid.Summon.GenerateCard(card, HandGroup.transform as RectTransform);
+            BattleCardMaid maid = CardPool[currentCardIdx];
+            CardPool.Remove(maid);
             maid.SetState(BattleMaid.CardState.Hand);
-            maid.Owner = this;
+            maid.transform.SetParent(HandGroup.transform);
             Hand.Add(maid);
         }
     }

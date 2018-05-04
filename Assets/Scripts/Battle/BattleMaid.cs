@@ -26,16 +26,17 @@ public class BattleMaid : MonoBehaviour
 
     public enum Turn
     {
-        Self, 
-        Opponent, 
+        Self = 1, 
+        Opponent = 2, 
     }
 
     public enum CardState
     {
-        None, 
-        CardPool, 
-        Hand, 
-        Field, 
+        None = 0, 
+        CardPool = 1, 
+        Hand = 2, 
+        Field = 4, 
+        All = 7, 
     }
 
     public const int MaxCommand = 3;
@@ -63,6 +64,8 @@ public class BattleMaid : MonoBehaviour
     private State state;
     private Turn currentTurn;
     private BattleCardMaid selectedCard;
+    private CommandMaid.State currentCmd;
+    private TargetSelector currentSelector;
     private CommandMaid[] commands = new CommandMaid[MaxCommand];
 
     public BattleCardMaid CurrentSelectedCard
@@ -109,24 +112,49 @@ public class BattleMaid : MonoBehaviour
     private void Init()
     {
         currentTurn = Turn.Self;
+        currentCmd = CommandMaid.State.None;
+        selectedCard = null;
 
         BGMPlayer.clip = BGM;
         BGMPlayer.Play();
-        //SetLeftPanelVisible(false);
         SelfPlayer.HandGroup.ClearChildren();
         SelfPlayer.MonsterGroup.ClearChildren();
+        OpponentPlayer.HandGroup.ClearChildren();
+        OpponentPlayer.MonsterGroup.ClearChildren();
         LeftCommandPanel.Clear();
 
         SelfPlayer.Init();
+        SelfPlayer.Side = Turn.Self;
         SelfPlayer.CardPool.Clear();
         for (int i = 0; i < 30; i++)
         {
             CardData card = CardPool.Cards[Random.Range(0, CardPool.Cards.Count)].Value;
-            SelfPlayer.CardPool.Add(card);
+            BattleCardMaid maid = BattleMaid.Summon.GenerateCard(card, SelfPlayer.CardPoolGroup.transform as RectTransform);
+            maid.SetState(BattleMaid.CardState.CardPool);
+            maid.Owner = SelfPlayer;
+            SelfPlayer.CardPool.Add(maid);
         }
         SelfPlayer.DrawCard(5);
         SelfPlayer.UpdateState();
+
         OpponentPlayer.Init();
+        OpponentPlayer.Side = Turn.Opponent;
+        OpponentPlayer.CardPool.Clear();
+        for (int i = 0; i < 30; i++)
+        {
+            CardData card = CardPool.Cards[Random.Range(0, CardPool.Cards.Count)].Value;
+            BattleCardMaid maid = BattleMaid.Summon.GenerateCard(card, OpponentPlayer.CardPoolGroup.transform as RectTransform);
+            maid.SetState(BattleMaid.CardState.CardPool);
+            maid.Owner = OpponentPlayer;
+            OpponentPlayer.CardPool.Add(maid);
+        }
+        OpponentPlayer.DrawCard(5);
+        OpponentPlayer.SummonCard(OpponentPlayer.Hand[4]);
+        OpponentPlayer.SummonCard(OpponentPlayer.Hand[3]);
+        OpponentPlayer.SummonCard(OpponentPlayer.Hand[2]);
+        OpponentPlayer.SummonCard(OpponentPlayer.Hand[1]);
+        OpponentPlayer.SummonCard(OpponentPlayer.Hand[0]);
+        OpponentPlayer.CurrentMana = 1;
         OpponentPlayer.UpdateState();
 
         for (int i = 0; i < MaxCommand; i++)
@@ -163,9 +191,18 @@ public class BattleMaid : MonoBehaviour
         case CommandMaid.State.Cancel:
             break;
         case CommandMaid.State.Attack:
-        case CommandMaid.State.Summon:
+            currentCmd = cmd;
+            currentSelector = new MonsterAttackTargetSelector();
+            List<ITargetable> targets = currentSelector.Eval(maid.Owner);
+            for (int i = 0; i < targets.Count; i++)
+            {
+                targets[i].ShowAsTarget();
+            }
+            break;
         case CommandMaid.State.Cast:
-            maid.Owner.UseCard(maid, cmd);
+            break;
+        case CommandMaid.State.Summon:
+            maid.Owner.SummonCard(maid);
             break;
         }
         maid.Owner.UpdateState();
@@ -182,12 +219,59 @@ public class BattleMaid : MonoBehaviour
 
     public bool IsAttackPossible(Player p, BattleCardMaid c)
     {
-        return false;
+        return true;
     }
 
     public bool IsCastPossible(Player p, BattleCardMaid c)
     {
         return p.CurrentMana >= c.CostMana;
+    }
+
+    public List<ITargetable> GetPlayerCards(Turn side, CardState type)
+    {
+        List<ITargetable> res = new List<ITargetable>();
+        if ((side & Turn.Self) != 0)
+        {
+            res.AddRange(GetPlayerCards(SelfPlayer, type));
+        }
+        if ((side & Turn.Opponent) != 0)
+        {
+            res.AddRange(GetPlayerCards(OpponentPlayer, type));
+        }
+        return res;
+    }
+
+    public List<ITargetable> GetPlayerCards(Player p, CardState type)
+    {
+        List<ITargetable> res = new List<ITargetable>();
+        if ((type & CardState.CardPool) != 0)
+        {
+            res.AddRange(p.CardPool.ToList<ITargetable, BattleCardMaid>());
+        }
+        if ((type & CardState.Hand) != 0)
+        {
+            res.AddRange(p.Hand.ToList<ITargetable, BattleCardMaid>());
+        }
+        if ((type & CardState.Field) != 0)
+        {
+            res.AddRange(p.Monsters.ToList<ITargetable, BattleCardMaid>());
+        }
+        return res;
+    }
+
+    public void ClearShowAsTarget()
+    {
+        ClearShowAsTarget(SelfPlayer);
+        ClearShowAsTarget(OpponentPlayer);
+    }
+
+    public void ClearShowAsTarget(Player p)
+    {
+        List<ITargetable> all = GetPlayerCards(p, CardState.All);
+        for (int i = 0; i < all.Count; i++)
+        {
+            all[i].ShowAsTarget(false);
+        }
     }
 
     public void SetSelectedCard(BattleCardMaid maid)
@@ -216,27 +300,30 @@ public class BattleMaid : MonoBehaviour
     {
         int idx = 0;
         SelfPlayer.SetManaCostEstimate(0);
-        if (maid.Data.Type == CardType.Monster)
+        if (maid.Owner == SelfPlayer)
         {
-            if (maid.State == CardState.Hand)
+            if (maid.Data.Type == CardType.Monster)
             {
-                SetCommand(idx++, CommandMaid.State.Summon, IsSummonPossible(SelfPlayer, maid));
-                if (IsSummonPossible(SelfPlayer, maid))
+                if (maid.State == CardState.Hand)
+                {
+                    SetCommand(idx++, CommandMaid.State.Summon, IsSummonPossible(SelfPlayer, maid));
+                    if (IsSummonPossible(SelfPlayer, maid))
+                    {
+                        SelfPlayer.SetManaCostEstimate(maid.CostMana);
+                    }
+                }
+                else if (maid.State == CardState.Field)
+                {
+                    SetCommand(idx++, CommandMaid.State.Attack, IsAttackPossible(SelfPlayer, maid));
+                }
+            }
+            else if (maid.Data.Type == CardType.Spell)
+            {
+                SetCommand(idx++, CommandMaid.State.Cast, IsCastPossible(SelfPlayer, maid));
+                if (IsCastPossible(SelfPlayer, maid))
                 {
                     SelfPlayer.SetManaCostEstimate(maid.CostMana);
                 }
-            }
-            else if (maid.State == CardState.Field)
-            {
-                SetCommand(idx++, CommandMaid.State.Attack, IsAttackPossible(SelfPlayer, maid));
-            }
-        }
-        else if (maid.Data.Type == CardType.Spell)
-        {
-            SetCommand(idx++, CommandMaid.State.Cast, IsCastPossible(SelfPlayer, maid));
-            if (IsCastPossible(SelfPlayer, maid))
-            {
-                SelfPlayer.SetManaCostEstimate(maid.CostMana);
             }
         }
         while (idx < MaxCommand)

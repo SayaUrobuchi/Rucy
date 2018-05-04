@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleCardMaid : MonoBehaviour
+public class BattleCardMaid : MonoBehaviour, ITargetable
 {
     public CardData Data;
 
@@ -15,12 +15,14 @@ public class BattleCardMaid : MonoBehaviour
     public GameObject AttackPanel;
     public GameObject HealthPanel;
     public UVMaid CardLook;
+    public Image Border;
 
     private int mana;
     private int atk;
     private int hp;
 
     private bool casting;
+    private bool attacked;
     private BattleMaid.CardState state;
     private Player owner;
 
@@ -72,6 +74,7 @@ public class BattleCardMaid : MonoBehaviour
         hp = maid.hp;
         casting = maid.casting;
         state = maid.state;
+        attacked = maid.attacked;
         Refresh();
     }
 
@@ -99,6 +102,28 @@ public class BattleCardMaid : MonoBehaviour
         CardLook.Texture = Data.CardImage;
         CardLook.UV = Data.UV;
     }
+
+    #region ITargetable
+    public void ApplyDamage(int dmg, int type = 0)
+    {
+    }
+
+    public void ApplyHeal(int heal, int type = 0)
+    {
+    }
+
+    public void ShowAsTarget(bool value = true)
+    {
+        if (value)
+        {
+            Border.color = Color.magenta;
+        }
+        else
+        {
+            Border.color = Color.white;
+        }
+    }
+    #endregion
 
     public void OnMouseEnter()
     {

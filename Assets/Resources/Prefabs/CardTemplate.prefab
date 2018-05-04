@@ -336,6 +336,7 @@ MonoBehaviour:
   AttackPanel: {fileID: 1573838307975096}
   HealthPanel: {fileID: 1427331380190954}
   CardLook: {fileID: 114027476111469798}
+  Border: {fileID: 114032677044609256}
 --- !u!114 &114477264760399232
 MonoBehaviour:
   m_ObjectHideFlags: 1

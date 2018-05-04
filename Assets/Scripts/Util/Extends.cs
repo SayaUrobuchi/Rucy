@@ -4,6 +4,19 @@ using UnityEngine;
 
 public static class Extends
 {
+#region C#Generic
+    public static List<T> ToList<T, U>(this List<U> list) where U : T
+    {
+        List<T> res = new List<T>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            res.Add((T)list[i]);
+        }
+        return res;
+    }
+#endregion
+
+#region UNITY
     public static Transform Clear(this Transform transform)
     {
         foreach (Transform child in transform)
@@ -25,4 +38,5 @@ public static class Extends
     {
         mb.gameObject.SetActive(value);
     }
+#endregion
 }
