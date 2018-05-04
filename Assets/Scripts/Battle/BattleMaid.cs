@@ -48,6 +48,7 @@ public class BattleMaid : MonoBehaviour
     public RectTransform LeftPanel;
     public RectTransform LeftCommandPanel;
     public CommandMaid TurnEndCommand;
+    public HelperMaid Helper;
 
     [Header("Field")]
     public AudioClip BGM;
@@ -169,6 +170,8 @@ public class BattleMaid : MonoBehaviour
             commands[i].SetVisible(false);
         }
         TurnEndCommand.SetCommand(CommandMaid.State.TurnEnd, true);
+
+        Helper.SetText("你的回合。");
     }
 
     public BattleCardMaid GenerateCard(CardData data, RectTransform Container)
@@ -259,6 +262,7 @@ public class BattleMaid : MonoBehaviour
             {
                 currentCmd = CommandMaid.State.None;
                 ClearSetTargetable();
+                Helper.SetText("攻擊取消。");
                 break;
             }
         case CommandMaid.State.Attack:
@@ -269,6 +273,7 @@ public class BattleMaid : MonoBehaviour
             {
                 targets[i].SetTargetable();
             }
+            Helper.SetText("請選擇攻擊目標：");
             break;
         case CommandMaid.State.Cast:
             break;

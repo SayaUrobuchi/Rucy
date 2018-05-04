@@ -9723,6 +9723,7 @@ GameObject:
   - component: {fileID: 1001958204}
   - component: {fileID: 1001958206}
   - component: {fileID: 1001958205}
+  - component: {fileID: 1001958207}
   m_Layer: 5
   m_Name: Helper
   m_TagString: Untagged
@@ -9782,6 +9783,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1001958203}
+--- !u!114 &1001958207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1001958203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3778263d54a7934184f72a3df1feeca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HelperText: {fileID: 1625161164}
 --- !u!1001 &1027431643
 Prefab:
   m_ObjectHideFlags: 0
@@ -10881,6 +10894,7 @@ MonoBehaviour:
   LeftPanel: {fileID: 576763476}
   LeftCommandPanel: {fileID: 287318198}
   TurnEndCommand: {fileID: 15053224}
+  Helper: {fileID: 1001958207}
   BGM: {fileID: 8300000, guid: e03cf72c79c442041b170f8d7a052ad5, type: 3}
   CardTemplate: {fileID: 114472559514222144, guid: f0fd0309b57f6004186f42216696106d,
     type: 2}
