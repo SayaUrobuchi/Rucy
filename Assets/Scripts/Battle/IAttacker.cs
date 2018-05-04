@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BattleAction
+public interface IAttacker
 {
-    public abstract void Execute();
+    AttackBattleAction Attack(ITargetable target);
 }

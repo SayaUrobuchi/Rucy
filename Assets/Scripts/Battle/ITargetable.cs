@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface ITargetable
 {
-    void ApplyDamage(int dmg, int type = 0);
+    void ApplyDamage(int dmg, AttackBattleAction.DamageType type = 0);
     void ApplyHeal(int heal, int type = 0);
-    void ShowAsTarget(bool value = true);
+    void SetTargetable(bool value = true);
+    AttackBattleAction Counter(ITargetable target);
 }

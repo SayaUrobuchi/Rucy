@@ -56,6 +56,7 @@ public class BattleMaid : MonoBehaviour
     public BattleCardMaid CardTemplate;
     public CommandMaid CommandTemplate;
     public ManaBlockMaid ManaBlockTemplate;
+    public DamagePopupMaid DamagePopupTemplate;
 
     [Header("Player")]
     public Player SelfPlayer;
@@ -191,12 +192,12 @@ public class BattleMaid : MonoBehaviour
         case CommandMaid.State.Cancel:
             break;
         case CommandMaid.State.Attack:
-            currentCmd = cmd;
+            currentCmd = CommandMaid.State.Attacking;
             currentSelector = new MonsterAttackTargetSelector();
             List<ITargetable> targets = currentSelector.Eval(maid.Owner);
             for (int i = 0; i < targets.Count; i++)
             {
-                targets[i].ShowAsTarget();
+                targets[i].SetTargetable();
             }
             break;
         case CommandMaid.State.Cast:
@@ -259,18 +260,65 @@ public class BattleMaid : MonoBehaviour
         return res;
     }
 
-    public void ClearShowAsTarget()
+    public void ClearSetTargetable()
     {
-        ClearShowAsTarget(SelfPlayer);
-        ClearShowAsTarget(OpponentPlayer);
+        ClearSetTargetable(SelfPlayer);
+        ClearSetTargetable(OpponentPlayer);
     }
 
-    public void ClearShowAsTarget(Player p)
+    public void ClearSetTargetable(Player p)
     {
         List<ITargetable> all = GetPlayerCards(p, CardState.All);
         for (int i = 0; i < all.Count; i++)
         {
-            all[i].ShowAsTarget(false);
+            all[i].SetTargetable(false);
+        }
+    }
+
+    public void OnAttack(IAttacker attacker, ITargetable defender)
+    {
+        AttackBattleAction action = attacker.Attack(defender);
+        AttackBattleAction counterAction = null;
+        if ((action.Type & AttackBattleAction.DamageType.CanBeCounter) != 0)
+        {
+            ITargetable a = attacker as ITargetable;
+            if (a != null)
+            {
+                counterAction = defender.Counter(a);
+            }
+        }
+        action.Execute();
+        if (counterAction != null)
+        {
+            counterAction.Execute();
+        }
+    }
+
+    public void OnSelectCard(BattleCardMaid maid)
+    {
+        switch (currentCmd)
+        {
+        case CommandMaid.State.None:
+            {
+                if (CurrentSelectedCard != maid)
+                {
+                    SetSelectedCard(maid);
+                }
+                else
+                {
+                    SetSelectedCard(null);
+                }
+                break;
+            }
+        case CommandMaid.State.Attacking:
+            {
+                if (maid.Targetable)
+                {
+                    OnAttack(selectedCard, maid);
+                    currentCmd = CommandMaid.State.None;
+                }
+                break;
+            }
         }
     }
 

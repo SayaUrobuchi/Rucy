@@ -9,6 +9,8 @@ public static class MenuItemMaid
     public static void CreateSongData()
     {
         CardData data = ScriptableObject.CreateInstance<CardData>();
-        AssetDatabase.CreateAsset(data, AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/Data/CardData/NewCardData.asset"));
+        string path = AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/Data/CardData/NewCardData.asset");
+        AssetDatabase.CreateAsset(data, path);
+        EditorGUIUtility.PingObject(data);
     }
 }

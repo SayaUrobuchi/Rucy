@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleCardMaid : MonoBehaviour, ITargetable
+public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
 {
     public CardData Data;
 
@@ -23,6 +23,7 @@ public class BattleCardMaid : MonoBehaviour, ITargetable
 
     private bool casting;
     private bool attacked;
+    private bool targetable;
     private BattleMaid.CardState state;
     private Player owner;
 
@@ -38,7 +39,23 @@ public class BattleCardMaid : MonoBehaviour, ITargetable
     {
         get
         {
-            return Data.Mana;
+            return mana;
+        }
+    }
+
+    public int ATK
+    {
+        get
+        {
+            return atk;
+        }
+    }
+
+    public int HP
+    {
+        get
+        {
+            return hp;
         }
     }
 
@@ -55,6 +72,14 @@ public class BattleCardMaid : MonoBehaviour, ITargetable
         }
     }
 
+    public bool Targetable
+    {
+        get
+        {
+            return targetable;
+        }
+    }
+
     public void SetShow(bool show)
     {
         gameObject.SetActive(show);
@@ -63,6 +88,9 @@ public class BattleCardMaid : MonoBehaviour, ITargetable
     public void SetCard(CardData data)
     {
         Data = data;
+        mana = Data.Mana;
+        atk = Data.Attack;
+        hp = Data.Health;
         ShowCard();
     }
 
@@ -103,16 +131,44 @@ public class BattleCardMaid : MonoBehaviour, ITargetable
         CardLook.UV = Data.UV;
     }
 
-    #region ITargetable
-    public void ApplyDamage(int dmg, int type = 0)
+    #region IAttacker
+    public AttackBattleAction Attack(ITargetable target)
     {
+        if (Data.Type == CardType.Monster)
+        {
+            return new AttackBattleAction(atk, AttackBattleAction.DamageType.Monster | AttackBattleAction.DamageType.CanBeCounter, this, target);
+        }
+        return new AttackBattleAction(atk, AttackBattleAction.DamageType.Spell, this, target);
+    }
+    #endregion
+
+    #region ITargetable
+    public void ApplyDamage(int dmg, AttackBattleAction.DamageType type = 0)
+    {
+        hp -= dmg;
+        DamagePopupMaid popup = Instantiate(BattleMaid.Summon.DamagePopupTemplate);
+        popup.SetDamageAmount(dmg);
+        popup.SetPosition(transform);
+        Refresh();
     }
 
     public void ApplyHeal(int heal, int type = 0)
     {
     }
 
-    public void ShowAsTarget(bool value = true)
+    public void SetTargetable(bool value = true)
+    {
+        targetable = value;
+        ShowAsTargetable(targetable);
+    }
+
+    public AttackBattleAction Counter(ITargetable target)
+    {
+        return new AttackBattleAction(atk, AttackBattleAction.DamageType.Counter, this, target);
+    }
+    #endregion
+
+    public void ShowAsTargetable(bool value)
     {
         if (value)
         {
@@ -123,7 +179,6 @@ public class BattleCardMaid : MonoBehaviour, ITargetable
             Border.color = Color.white;
         }
     }
-    #endregion
 
     public void OnMouseEnter()
     {
@@ -137,14 +192,7 @@ public class BattleCardMaid : MonoBehaviour, ITargetable
 
     public void OnMouseClicked()
     {
-        if (BattleMaid.Summon.CurrentSelectedCard != this)
-        {
-            BattleMaid.Summon.SetSelectedCard(this);
-        }
-        else
-        {
-            BattleMaid.Summon.SetSelectedCard(null);
-        }
+        BattleMaid.Summon.OnSelectCard(this);
     }
 
     [ContextMenu("ShowCard")]

@@ -11,7 +11,7 @@ public class AttackBattleAction : BattleAction
         Spell = (1 << 1),
         HeroWeapon = (1 << 2),
         Counter = (1 << 3),
-        Preserved1 = (1 << 4),
+        CanBeCounter = (1 << 4),
         Preserved2 = (1 << 5),
         Preserved3 = (1 << 6),
         Preserved4 = (1 << 7),
@@ -20,11 +20,24 @@ public class AttackBattleAction : BattleAction
     }
 
     public int Power;
-    public int Type;
+    public DamageType Type;
+    public IAttacker Attacker;
+    public ITargetable Target;
 
-    public AttackBattleAction(int pow, int type)
+    public AttackBattleAction(int pow, DamageType type)
     {
         Power = pow;
         Type = type;
+    }
+
+    public AttackBattleAction(int pow, DamageType type, IAttacker attacker, ITargetable target) : this(pow, type)
+    {
+        Attacker = attacker;
+        Target = target;
+    }
+
+    public override void Execute()
+    {
+        Target.ApplyDamage(Power, Type);
     }
 }
