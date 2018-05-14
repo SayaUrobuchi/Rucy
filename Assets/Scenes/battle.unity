@@ -22069,8 +22069,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 32
-  CurrentMana: 3
-  MaxMana: 9
+  CurrentMana: 0
+  MaxMana: 0
   Armor: 0
   CardPool: []
   Hand: []

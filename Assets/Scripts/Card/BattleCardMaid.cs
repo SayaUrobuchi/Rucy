@@ -137,6 +137,16 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
         state = s;
     }
 
+    public void Wakeup()
+    {
+        sleeping = false;
+    }
+
+    public void OnSummon()
+    {
+        sleeping = true;
+    }
+
     private void Refresh()
     {
         DescText.text = Data.Description;

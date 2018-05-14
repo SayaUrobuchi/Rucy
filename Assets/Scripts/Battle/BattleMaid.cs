@@ -78,6 +78,14 @@ public class BattleMaid : MonoBehaviour
         }
     }
 
+    public Turn CurrentTurn
+    {
+        get
+        {
+            return currentTurn;
+        }
+    }
+
 	// Use this for initialization
 	void Start ()
     {
@@ -100,11 +108,15 @@ public class BattleMaid : MonoBehaviour
             state = State.TurnStart;
             break;
         case State.TurnStart:
+            Player cp = (currentTurn == Turn.Self ? SelfPlayer : OpponentPlayer);
+            cp.OnTurnStart();
             state = State.TurnAction;
             break;
         case State.TurnAction:
             break;
         case State.TurnEnd:
+            currentTurn = (currentTurn == Turn.Self ? Turn.Opponent : Turn.Self);
+            state = State.TurnStart;
             break;
         case State.BattleEnd:
             break;
@@ -250,14 +262,17 @@ public class BattleMaid : MonoBehaviour
         {
             maid = CurrentSelectedCard;
         }
+        if (cmd == CommandMaid.State.TurnEnd)
+        {
+            EndTurn();
+            return;
+        }
         if (maid == null || cmd == CommandMaid.State.None)
         {
             return;
         }
         switch (cmd)
         {
-        case CommandMaid.State.TurnEnd:
-            break;
         case CommandMaid.State.Cancel:
             {
                 currentCmd = CommandMaid.State.None;
@@ -286,6 +301,11 @@ public class BattleMaid : MonoBehaviour
         {
             SetCommand(maid);
         }
+    }
+
+    public void EndTurn()
+    {
+        state = State.TurnEnd;
     }
 
     public void OnAttack(IAttacker attacker, ITargetable defender)

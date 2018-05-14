@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
         maid.SetState(BattleMaid.CardState.Field);
         Monsters.Add(maid);
         maid.transform.SetParent(MonsterGroup.transform);
+        maid.OnSummon();
     }
 
     public void DrawCard(int count = 1)
@@ -115,6 +116,18 @@ public class Player : MonoBehaviour
         movingToTomb.Add(c);
     }
 
+    public void OnTurnStart()
+    {
+        for (int i = 0; i < Monsters.Count; i++)
+        {
+            Monsters[i].Wakeup();
+        }
+        DrawCard();
+        MaxMana = Mathf.Min(MaxMana+1, 10);
+        CurrentMana = MaxMana;
+        UpdateState();
+    }
+
     private void Update()
     {
         if (movingToTomb.Count > 0)
@@ -132,6 +145,10 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+        }
+        if (Side == BattleMaid.Turn.Opponent && BattleMaid.Summon.CurrentTurn == BattleMaid.Turn.Opponent)
+        {
+            BattleMaid.Summon.EndTurn();
         }
     }
 }
