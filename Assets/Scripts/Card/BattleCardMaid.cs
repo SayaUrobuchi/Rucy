@@ -23,7 +23,9 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
 
     private bool casting;
     private bool attacked;
+    private bool sleeping;
     private bool targetable;
+    private float animateTimer;
     private BattleMaid.CardState state;
     private Player owner;
 
@@ -77,6 +79,30 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
         get
         {
             return targetable;
+        }
+    }
+
+    public bool IsAttacked
+    {
+        get
+        {
+            return attacked;
+        }
+    }
+
+    public bool IsSleeping
+    {
+        get
+        {
+            return sleeping;
+        }
+    }
+
+    public bool IsAnimating
+    {
+        get
+        {
+            return animateTimer > 0f;
         }
     }
 
@@ -140,6 +166,20 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
         }
         return new AttackBattleAction(atk, AttackBattleAction.DamageType.Spell, this, target);
     }
+
+    public void OnAttack(AttackBattleAction action)
+    {
+        attacked = true;
+    }
+
+    public void DeathCheck()
+    {
+        if (hp <= 0)
+        {
+            animateTimer = 1.5f;
+            owner.MoveCardToTomb(this);
+        }
+    }
     #endregion
 
     #region ITargetable
@@ -166,6 +206,10 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     {
         return new AttackBattleAction(atk, AttackBattleAction.DamageType.Counter, this, target);
     }
+
+    public void OnAttacked(AttackBattleAction action)
+    {
+    }
     #endregion
 
     public void ShowAsTargetable(bool value)
@@ -177,6 +221,14 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
         else
         {
             Border.color = Color.white;
+        }
+    }
+
+    private void Update()
+    {
+        if (animateTimer >= 0f)
+        {
+            animateTimer -= Time.deltaTime;
         }
     }
 

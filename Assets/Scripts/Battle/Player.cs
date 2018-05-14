@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
     private ManaBlockMaid[] manaBlocks = new ManaBlockMaid[BattleMaid.MaxMana];
     private int manaCostEstimate = 0;
     private int currentCardIdx = 0;
+    private List<BattleCardMaid> movingToTomb = new List<BattleCardMaid>();
 
     public void Init()
     {
@@ -88,6 +89,49 @@ public class Player : MonoBehaviour
             maid.SetState(BattleMaid.CardState.Hand);
             maid.transform.SetParent(HandGroup.transform);
             Hand.Add(maid);
+        }
+    }
+
+    public void RemoveCard(BattleCardMaid c)
+    {
+        if (c.State == BattleMaid.CardState.CardPool)
+        {
+            CardPool.Remove(c);
+        }
+        else if (c.State == BattleMaid.CardState.Field)
+        {
+            Monsters.Remove(c);
+        }
+        else if (c.State == BattleMaid.CardState.Hand)
+        {
+            Hand.Remove(c);
+        }
+    }
+
+    public void MoveCardToTomb(BattleCardMaid c)
+    {
+        RemoveCard(c);
+        Tomb.Add(c);
+        movingToTomb.Add(c);
+    }
+
+    private void Update()
+    {
+        if (movingToTomb.Count > 0)
+        {
+            for (int i = movingToTomb.Count-1; i >= 0; i--)
+            {
+                BattleCardMaid maid = movingToTomb[i];
+                if (!maid.IsAnimating)
+                {
+                    maid.transform.SetParent(TombGroup.transform);
+                    movingToTomb.RemoveAt(i);
+                    if (BattleMaid.Summon.CurrentSelectedCard == maid)
+                    {
+                        BattleMaid.Summon.SetSelectedCard(null);
+                    }
+                }
+            }
         }
     }
 }

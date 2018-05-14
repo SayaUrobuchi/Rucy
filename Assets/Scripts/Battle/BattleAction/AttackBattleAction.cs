@@ -38,6 +38,8 @@ public class AttackBattleAction : BattleAction
 
     public override void Execute()
     {
+        Attacker.OnAttack(this);
         Target.ApplyDamage(Power, Type);
+        Target.OnAttacked(this);
     }
 }

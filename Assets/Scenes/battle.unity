@@ -15414,7 +15414,7 @@ MonoBehaviour:
   CardPoolGroup: {fileID: 1472509274}
   HandGroup: {fileID: 561437272}
   MonsterGroup: {fileID: 1242773079}
-  TombGroup: {fileID: 0}
+  TombGroup: {fileID: 1145590247}
   HPText: {fileID: 1869383844}
   ArmorText: {fileID: 404119010}
   ArmorPanel: {fileID: 2048414129}
@@ -22080,7 +22080,7 @@ MonoBehaviour:
   CardPoolGroup: {fileID: 1788206334}
   HandGroup: {fileID: 1179368288}
   MonsterGroup: {fileID: 1468665453}
-  TombGroup: {fileID: 0}
+  TombGroup: {fileID: 1027988313}
   HPText: {fileID: 1709053944}
   ArmorText: {fileID: 1701447625}
   ArmorPanel: {fileID: 1773235122}

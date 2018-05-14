@@ -8,4 +8,6 @@ public interface ITargetable
     void ApplyHeal(int heal, int type = 0);
     void SetTargetable(bool value = true);
     AttackBattleAction Counter(ITargetable target);
+    void OnAttacked(AttackBattleAction action);
+    void DeathCheck();
 }

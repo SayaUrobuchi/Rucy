@@ -5,4 +5,6 @@ using UnityEngine;
 public interface IAttacker
 {
     AttackBattleAction Attack(ITargetable target);
+    void OnAttack(AttackBattleAction action);
+    void DeathCheck();
 }

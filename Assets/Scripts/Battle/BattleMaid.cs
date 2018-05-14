@@ -189,6 +189,7 @@ public class BattleMaid : MonoBehaviour
 
     public bool IsAttackPossible(Player p, BattleCardMaid c)
     {
+        //return !c.IsAttacked;
         return true;
     }
 
@@ -305,6 +306,8 @@ public class BattleMaid : MonoBehaviour
         {
             counterAction.Execute();
         }
+        attacker.DeathCheck();
+        defender.DeathCheck();
     }
 
     public void OnSelectCard(BattleCardMaid maid)
