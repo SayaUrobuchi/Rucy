@@ -189,8 +189,7 @@ public class BattleMaid : MonoBehaviour
 
     public bool IsAttackPossible(Player p, BattleCardMaid c)
     {
-        //return !c.IsAttacked;
-        return true;
+        return !c.IsAttacked && !c.IsSleeping;
     }
 
     public bool IsCastPossible(Player p, BattleCardMaid c)
