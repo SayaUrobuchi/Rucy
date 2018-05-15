@@ -115,8 +115,12 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     {
         Data = data;
         mana = Data.Mana;
-        atk = Data.Attack;
-        hp = Data.Health;
+        if (Data is MonsterCardData)
+        {
+            MonsterCardData mc = Data as MonsterCardData;
+            atk = mc.Attack;
+            hp = mc.Health;
+        }
         ShowCard();
     }
 
@@ -302,8 +306,12 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     public void ShowCard()
     {
         mana = Data.Mana;
-        atk = Data.Attack;
-        hp = Data.Health;
+        if (Data is MonsterCardData)
+        {
+            MonsterCardData mc = Data as MonsterCardData;
+            atk = mc.Attack;
+            hp = mc.Health;
+        }
         Refresh();
     }
 
@@ -319,8 +327,12 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     {
         Data.Description = DescText.text;
         Data.Mana = int.Parse(ManaText.text);
-        Data.Attack = int.Parse(AttackText.text);
-        Data.Health = int.Parse(HealthText.text);
+        if (Data is MonsterCardData)
+        {
+            MonsterCardData mc = Data as MonsterCardData;
+            mc.Attack = int.Parse(AttackText.text);
+            mc.Health = int.Parse(HealthText.text);
+        }
     }
 
     [ContextMenu("RecordCardLooks")]

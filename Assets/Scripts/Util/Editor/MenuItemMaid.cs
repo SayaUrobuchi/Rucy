@@ -5,12 +5,23 @@ using UnityEditor;
 
 public static class MenuItemMaid
 {
-    [MenuItem("Rucy/Create/CardData", priority = 0)]
-    public static void CreateSongData()
+    [MenuItem("Rucy/Create/MonsterCard", priority = 0)]
+    public static void CreateMonsterCard()
     {
-        CardData data = ScriptableObject.CreateInstance<CardData>();
-        string path = AssetDatabase.GenerateUniqueAssetPath("Assets/Resources/Data/CardData/NewCardData.asset");
-        AssetDatabase.CreateAsset(data, path);
+        CreateData<MonsterCardData>("Assets/Resources/Data/CardData/NewMonsterCard.asset");
+    }
+
+    [MenuItem("Rucy/Create/SpellCard", priority = 0)]
+    public static void CreateSpellCard()
+    {
+        CreateData<SpellCardData>("Assets/Resources/Data/CardData/NewSpellCard.asset");
+    }
+    
+    public static void CreateData<T>(string path) where T : ScriptableObject
+    {
+        T data = ScriptableObject.CreateInstance<T>();
+        string realPath = AssetDatabase.GenerateUniqueAssetPath(path);
+        AssetDatabase.CreateAsset(data, realPath);
         EditorGUIUtility.PingObject(data);
     }
 }

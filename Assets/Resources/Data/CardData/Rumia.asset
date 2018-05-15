@@ -8,18 +8,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbfbb2f07d1873b4c94bd0fa7ed77522, type: 3}
-  m_Name: Rumia
+  m_Script: {fileID: 11500000, guid: 496fa28520873764786f3b013693615a, type: 3}
+  m_Name: NewSpellCard
   m_EditorClassIdentifier: 
-  Type: 1
-  Description: "\u9020\u62103\u9EDE\u50B7\u5BB3"
+  Type: 0
+  Description: 
   Mana: 1
-  Attack: 3
+  Attack: 0
   Health: 0
-  CardImage: {fileID: 2800000, guid: 0ae4cd258b3bd564cae4fe7f61664ebe, type: 3}
+  Ability: 0
+  CardImage: {fileID: 0}
   UV:
     serializedVersion: 2
-    x: 0.24
-    y: 0.72
-    width: 0.4730713
-    height: 0.26
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  Source: {fileID: 0}
