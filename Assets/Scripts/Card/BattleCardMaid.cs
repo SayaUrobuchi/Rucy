@@ -140,6 +140,7 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     public void Wakeup()
     {
         sleeping = false;
+        attacked = false;
     }
 
     public void OnSummon()
@@ -193,6 +194,14 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     #endregion
 
     #region ITargetable
+    public bool IsTaunt
+    {
+        get
+        {
+            return (Data.Ability & CardAbility.Taunt) != 0;
+        }
+    }
+
     public void ApplyDamage(int dmg, AttackBattleAction.DamageType type = 0)
     {
         hp -= dmg;
@@ -219,6 +228,38 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
 
     public void OnAttacked(AttackBattleAction action)
     {
+    }
+
+    public bool TargetableJudge(TargetSelector.Range range)
+    {
+        bool res = true;
+        switch (state)
+        {
+        case BattleMaid.CardState.CardPool:
+            res = (range & TargetSelector.Range.CardPool) != 0;
+            break;
+        case BattleMaid.CardState.Hand:
+            res = (range & TargetSelector.Range.Hand) != 0;
+            break;
+        case BattleMaid.CardState.Field:
+            res = (range & TargetSelector.Range.Field) != 0;
+            break;
+        case BattleMaid.CardState.Tomb:
+            res = (range & TargetSelector.Range.Tomb) != 0;
+            break;
+        }
+        if (res)
+        {
+            if (Data.Type == CardType.Monster)
+            {
+                res = (range & TargetSelector.Range.Monster) != 0;
+            }
+            else if (Data.Type == CardType.Spell)
+            {
+                res = (range & TargetSelector.Range.Spell) != 0;
+            }
+        }
+        return res;
     }
     #endregion
 

@@ -36,7 +36,8 @@ public class BattleMaid : MonoBehaviour
         CardPool = 1, 
         Hand = 2, 
         Field = 4, 
-        All = 7, 
+        Tomb = 8, 
+        All = 15, 
     }
 
     public const int MaxCommand = 3;
@@ -110,6 +111,7 @@ public class BattleMaid : MonoBehaviour
         case State.TurnStart:
             Player cp = (currentTurn == Turn.Self ? SelfPlayer : OpponentPlayer);
             cp.OnTurnStart();
+            SetSelectedCard(selectedCard);
             state = State.TurnAction;
             break;
         case State.TurnAction:
@@ -142,9 +144,9 @@ public class BattleMaid : MonoBehaviour
         SelfPlayer.CardPool.Clear();
         for (int i = 0; i < 30; i++)
         {
-            CardData card = CardPool.Cards[Random.Range(0, CardPool.Cards.Count)].Value;
-            BattleCardMaid maid = BattleMaid.Summon.GenerateCard(card, SelfPlayer.CardPoolGroup.transform as RectTransform);
-            maid.SetState(BattleMaid.CardState.CardPool);
+            CardData card = CardPool.Cards[i % CardPool.Cards.Count].Value;
+            BattleCardMaid maid = GenerateCard(card, SelfPlayer.CardPoolGroup.transform as RectTransform);
+            maid.SetState(CardState.CardPool);
             maid.Owner = SelfPlayer;
             SelfPlayer.CardPool.Add(maid);
         }
@@ -156,9 +158,9 @@ public class BattleMaid : MonoBehaviour
         OpponentPlayer.CardPool.Clear();
         for (int i = 0; i < 30; i++)
         {
-            CardData card = CardPool.Cards[Random.Range(0, CardPool.Cards.Count)].Value;
-            BattleCardMaid maid = BattleMaid.Summon.GenerateCard(card, OpponentPlayer.CardPoolGroup.transform as RectTransform);
-            maid.SetState(BattleMaid.CardState.CardPool);
+            CardData card = CardPool.Cards[i % CardPool.Cards.Count].Value;
+            BattleCardMaid maid = GenerateCard(card, OpponentPlayer.CardPoolGroup.transform as RectTransform);
+            maid.SetState(CardState.CardPool);
             maid.Owner = OpponentPlayer;
             OpponentPlayer.CardPool.Add(maid);
         }

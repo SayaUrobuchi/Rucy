@@ -10,4 +10,6 @@ public interface ITargetable
     AttackBattleAction Counter(ITargetable target);
     void OnAttacked(AttackBattleAction action);
     void DeathCheck();
+    bool IsTaunt { get; }
+    bool TargetableJudge(TargetSelector.Range range);
 }

@@ -6,17 +6,30 @@ public abstract class TargetSelector
 {
     public enum Range
     {
-        Self = (1 << 0),
-        Opponent = (1 << 1),
-        TopSide = (1 << 2),
-        BottomSide = (1 << 3),
-        Monster = (1 << 4),
-        Hero = (1 << 5),
-        IgnoreTaunt = (1 << 6),
-        RandomOne = (1 << 7),
-        AOE = (1 << 8),
-        Unique = (1 << 9),
-        Preserved4 = (1 << 10),
+        Self = (1 << 0), 
+        Opponent = (1 << 1), 
+        TopSide = (1 << 2), 
+        BottomSide = (1 << 3), 
+
+        Monster = (1 << 4), 
+        Spell = (1 << 5), 
+
+        IgnoreTaunt = (1 << 6), 
+
+        RandomOne = (1 << 7), 
+        AOE = (1 << 8), 
+        Unique = (1 << 9), 
+
+        Hand = (1 << 10), 
+        Tomb = (1 << 11), 
+        Field = (1 << 12), 
+        CardPool = (1 << 13), 
+
+        Hero = (1 << 14), 
+
+        AllCardPosition = (Hand | Tomb | Field | CardPool), 
+        AllSide = (TopSide | BottomSide), 
+        AllCardType = (Monster | Spell), 
     }
 
     private List<ITargetable> result;
@@ -39,7 +52,7 @@ public abstract class TargetSelector
 
     public bool Judge(ITargetable target)
     {
-        return true;
+        return target.TargetableJudge(RangeMask);
     }
 
     public List<ITargetable> Eval(Player p)
@@ -64,6 +77,22 @@ public abstract class TargetSelector
             if (Judge(all[i]))
             {
                 res.Add(all[i]);
+            }
+        }
+        List<ITargetable> tauntList = new List<ITargetable>();
+        if ((t & Range.IgnoreTaunt) == 0)
+        {
+            for (int i = 0; i < res.Count; i++)
+            {
+                ITargetable tar = res[i];
+                if (tar.IsTaunt)
+                {
+                    tauntList.Add(tar);
+                }
+            }
+            if (tauntList.Count > 0)
+            {
+                res = tauntList;
             }
         }
         return result=res;

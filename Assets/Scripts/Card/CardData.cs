@@ -10,6 +10,8 @@ public class CardData : ScriptableObject
     public int Mana = 1;
     public int Attack = 0;
     public int Health = 0;
+    [EnumMask(typeof(CardAbility))]
+    public CardAbility Ability;
 
     [Header("CardLooks")]
     public Texture CardImage;

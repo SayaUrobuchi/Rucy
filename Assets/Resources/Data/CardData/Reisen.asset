@@ -16,6 +16,7 @@ MonoBehaviour:
   Mana: 1
   Attack: 2
   Health: 1
+  Ability: 1
   CardImage: {fileID: 2800000, guid: 93f3379156ad52f418c4e3da7b8d093f, type: 3}
   UV:
     serializedVersion: 2

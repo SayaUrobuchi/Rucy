@@ -8,7 +8,7 @@ public class MonsterAttackTargetSelector : TargetSelector
     {
         get
         {
-            return (Range.Opponent | Range.Monster | Range.Hero);
+            return (Range.Opponent | Range.Monster | Range.Hero | Range.Field);
         }
     }
 }

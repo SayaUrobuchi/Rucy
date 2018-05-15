@@ -12,6 +12,7 @@ public class EnumMaskAttrPropertyDrawer : PropertyDrawer
         EnumMaskAttribute attr = attribute as EnumMaskAttribute;
 
         Enum e = Enum.ToObject(attr.EnumType, property.intValue) as Enum;
-        EditorGUI.EnumMaskField(position, e);
+        e = EditorGUI.EnumMaskField(position, label, e);
+        property.intValue = (int)Enum.ToObject(attr.EnumType, e);
     }
 }

@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
     {
         RemoveCard(c);
         Tomb.Add(c);
+        c.SetState(BattleMaid.CardState.Tomb);
         movingToTomb.Add(c);
     }
 
