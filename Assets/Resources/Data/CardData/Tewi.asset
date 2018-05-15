@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Name: Tewi
   m_EditorClassIdentifier: 
   Type: 0
-  Description: "\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D\u5341\u4E00\u4E8C"
+  Description: "\u885D\u523A"
   Mana: 2
   Attack: 1
   Health: 3
+  Ability: 2
   CardImage: {fileID: 2800000, guid: 0f83cddde90608843b082356846961fb, type: 3}
   UV:
     serializedVersion: 2

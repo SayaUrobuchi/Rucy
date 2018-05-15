@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Reisen
   m_EditorClassIdentifier: 
   Type: 0
-  Description: 
+  Description: "\u5632\u8AF7"
   Mana: 1
   Attack: 2
   Health: 1

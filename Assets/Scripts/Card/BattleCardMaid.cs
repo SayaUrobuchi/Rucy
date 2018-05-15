@@ -94,7 +94,7 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     {
         get
         {
-            return sleeping;
+            return sleeping && (Data.Ability & (CardAbility.Dash | CardAbility.WeakDash)) == 0;
         }
     }
 
