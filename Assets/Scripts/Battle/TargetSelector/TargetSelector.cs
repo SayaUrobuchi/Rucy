@@ -36,7 +36,8 @@ public abstract class TargetSelector
         */
     }
 
-    private List<ITargetable> result;
+    protected List<ITargetable> result;
+    protected ITargetable selected;
 
     public virtual Range RangeMask
     {
@@ -52,6 +53,28 @@ public abstract class TargetSelector
         {
             return result;
         }
+    }
+
+    public bool IsSelected
+    {
+        get
+        {
+            return selected != null;
+        }
+    }
+
+    public ITargetable SelectedTarget
+    {
+        get
+        {
+            return selected;
+        }
+    }
+
+    public void Clear()
+    {
+        selected = null;
+        result = null;
     }
 
     public bool Judge(ITargetable target)
@@ -101,5 +124,10 @@ public abstract class TargetSelector
             }
         }
         return result=res;
+    }
+
+    public void SelectTarget(ITargetable target)
+    {
+        selected = target;
     }
 }

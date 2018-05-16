@@ -22,3 +22,4 @@ MonoBehaviour:
     width: 0.4730713
     height: 0.26
   Source: {fileID: 0}
+  CastEffect: {fileID: 11400000, guid: c9345033e5791004db1e0aaa2bd1fbe1, type: 2}

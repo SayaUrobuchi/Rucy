@@ -88,6 +88,14 @@ public class BattleMaid : MonoBehaviour
         }
     }
 
+    public CommandMaid.State CurrentCmd
+    {
+        get
+        {
+            return currentCmd;
+        }
+    }
+
 	// Use this for initialization
 	void Start ()
     {
@@ -116,16 +124,13 @@ public class BattleMaid : MonoBehaviour
             state = State.TurnAction;
             break;
         case State.TurnAction:
-            if (currentCmd == CommandMaid.State.None)
+            if (events.Count > 0)
             {
-                if (events.Count > 0)
+                BattleEvent e = events.Peek();
+                e.Execute();
+                if (e.IsFinished)
                 {
-                    BattleEvent e = events.Peek();
-                    e.Execute();
-                    if (e.IsFinished)
-                    {
-                        events.Dequeue();
-                    }
+                    events.Dequeue();
                 }
             }
             break;
@@ -141,7 +146,7 @@ public class BattleMaid : MonoBehaviour
     private void Init()
     {
         currentTurn = Turn.Self;
-        currentCmd = CommandMaid.State.None;
+        ClearCurrentCommand();
         selectedCard = null;
 
         BGMPlayer.clip = BGM;
@@ -289,6 +294,11 @@ public class BattleMaid : MonoBehaviour
         }
     }
 
+    public void ClearCurrentCommand()
+    {
+        currentCmd = CommandMaid.State.None;
+    }
+
     public bool IsCommandPossible(BattleCardMaid maid, CommandMaid.State cmd)
     {
         if (cmd == CommandMaid.State.TurnEnd)
@@ -299,7 +309,21 @@ public class BattleMaid : MonoBehaviour
         {
             return false;
         }
+        if (cmd == CommandMaid.State.Cancel)
+        {
+            return true;
+        }
         return events.Count == 0 && currentTurn == maid.Owner.Side;
+    }
+
+    public void SetSelector(TargetSelector selector, IBattler battler)
+    {
+        currentSelector = selector;
+        List<ITargetable> targets = currentSelector.Eval(battler);
+        for (int i = 0; i < targets.Count; i++)
+        {
+            targets[i].SetTargetable();
+        }
     }
 
     public void CommandExecute(BattleCardMaid maid, CommandMaid.State cmd)
@@ -319,22 +343,28 @@ public class BattleMaid : MonoBehaviour
             break;
         case CommandMaid.State.Cancel:
             {
-                currentCmd = CommandMaid.State.None;
+                if (currentCmd == CommandMaid.State.Attacking)
+                {
+                    Helper.SetText("攻擊取消。");
+                }
+                else if (currentCmd == CommandMaid.State.Casting)
+                {
+                    Helper.SetText("施法取消。");
+                }
+                ClearCurrentCommand();
                 ClearSetTargetable();
-                Helper.SetText("攻擊取消。");
                 break;
             }
         case CommandMaid.State.Attack:
             currentCmd = CommandMaid.State.Attacking;
-            currentSelector = new MonsterAttackTargetSelector();
-            List<ITargetable> targets = currentSelector.Eval(maid);
-            for (int i = 0; i < targets.Count; i++)
-            {
-                targets[i].SetTargetable();
-            }
+            AddBattleEvent(new AttackBattleEvent(maid));
             Helper.SetText("請選擇攻擊目標：");
             break;
         case CommandMaid.State.Cast:
+            currentCmd = CommandMaid.State.Casting;
+            SpellCardData s = maid.Data as SpellCardData;
+            AddBattleEvent(new CastSpellBattleEvent(s.CastEffect, maid));
+            Helper.SetText("請選擇施法目標：");
             break;
         case CommandMaid.State.Summon:
             maid.Owner.SummonCard(maid);
@@ -398,12 +428,11 @@ public class BattleMaid : MonoBehaviour
                 break;
             }
         case CommandMaid.State.Attacking:
+        case CommandMaid.State.Casting:
             {
                 if (maid.Targetable)
                 {
-                    OnAttack(selectedCard, maid);
-                    currentCmd = CommandMaid.State.None;
-                    ClearSetTargetable();
+                    currentSelector.SelectTarget(maid);
                 }
                 break;
             }
@@ -439,6 +468,10 @@ public class BattleMaid : MonoBehaviour
         if ((currentCmd & (CommandMaid.State.Attacking | CommandMaid.State.Casting | CommandMaid.State.Summoning)) != 0)
         {
             SetCommand(idx++, CommandMaid.State.Cancel, true);
+            if (currentCmd == CommandMaid.State.Casting)
+            {
+                SelfPlayer.SetManaCostEstimate(maid.CostMana);
+            }
         }
         else if (maid.Owner == SelfPlayer)
         {

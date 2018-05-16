@@ -5,18 +5,19 @@ using UnityEngine;
 
 public class AbilityBattleEvent : BattleEvent
 {
-    private Ability ability;
-    private ICaster caster;
+    protected Ability ability;
+    protected ICaster caster;
 
     public AbilityBattleEvent(Ability a, ICaster c)
     {
         ability = a;
         caster = c;
+        ability.Init();
     }
 
     public override void Execute()
     {
-        if (!ability.IsFinished)
+        if (!finished)
         {
             ability.Cast(caster);
         }

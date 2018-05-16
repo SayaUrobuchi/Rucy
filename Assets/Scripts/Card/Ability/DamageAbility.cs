@@ -9,12 +9,37 @@ public class DamageAbility : TargetableAbility
 
     public override void Cast(ICaster caster)
     {
-        TargetSelector.Eval(caster);
-        List<ITargetable> res = TargetSelector.Result;
-        if (res.Count > 0)
+        if (!inited)
         {
-            res[0].ApplyDamage(Damage, AttackBattleAction.DamageType.Ability);
+            if (TargetSelector.Selectable)
+            {
+                BattleMaid.Summon.SetSelector(TargetSelector, caster);
+            }
+            else
+            {
+                TargetSelector.Eval(caster);
+                List<ITargetable> res = TargetSelector.Result;
+                if (res.Count > 0)
+                {
+                    Apply(res[0]);
+                }
+                finished = true;
+            }
+            inited = true;
         }
-        finished = true;
+        else
+        {
+            if (TargetSelector.IsSelected)
+            {
+                Apply(TargetSelector.SelectedTarget);
+                finished = true;
+            }
+        }
+    }
+
+    protected void Apply(ITargetable target)
+    {
+        target.ApplyDamage(Damage, AttackBattleAction.DamageType.Ability);
+        target.DeathCheck();
     }
 }

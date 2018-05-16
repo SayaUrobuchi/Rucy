@@ -5,4 +5,10 @@ using UnityEngine;
 public abstract class TargetableAbility : Ability
 {
     public CustomTargetSelector TargetSelector;
+
+    public override void Init()
+    {
+        base.Init();
+        TargetSelector.Clear();
+    }
 }

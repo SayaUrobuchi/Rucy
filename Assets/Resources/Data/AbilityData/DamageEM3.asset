@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc77bda3e06893e49ba5e2a2406c3bfc, type: 3}
-  m_Name: DamageAbility
+  m_Name: DamageEM3
   m_EditorClassIdentifier: 
   TargetSelector:
-    TargetRange: 36882
-    Selectable: 0
-  Damage: 1
+    TargetRange: 4114
+    Selectable: 1
+  Damage: 3

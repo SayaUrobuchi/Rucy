@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class SpellCardData : CardData
 {
+    [Header("SpellAttr")]
+    public Ability CastEffect;
+
     public override CardType Type
     {
         get

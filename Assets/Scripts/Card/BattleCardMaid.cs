@@ -207,6 +207,14 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker, ICaster
     }
     #endregion
 
+    #region ICaster
+    public void AfterCast()
+    {
+        owner.MoveCardToTomb(this);
+        owner.CurrentMana -= CostMana;
+    }
+    #endregion
+
     #region ITargetable
     public bool IsTaunt
     {

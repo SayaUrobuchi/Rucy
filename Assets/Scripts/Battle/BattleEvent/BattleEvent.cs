@@ -4,6 +4,7 @@ using UnityEngine;
 
 public abstract class BattleEvent
 {
+    protected bool inited = false;
     protected bool finished = false;
 
     public bool IsFinished
