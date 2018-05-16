@@ -9,19 +9,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a20ceb01605d5774da4d14b86ecabae4, type: 3}
-  m_Name: NewMonsterCard
+  m_Name: 9
   m_EditorClassIdentifier: 
-  Type: 0
-  Description: 
-  Mana: 1
-  Attack: 0
-  Health: 0
+  Description: "\u653B\u64CA\u6642\u4F7F\u5C0D\u65B9\u51CD\u7D50"
+  Mana: 9
   Ability: 0
-  CardImage: {fileID: 0}
+  CardImage: {fileID: 2800000, guid: edbff219559c1894f841ed47a2b5993b, type: 3}
   UV:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
+    x: 0.1
+    y: 0.62
+    width: 0.67196536
+    height: 0.31
   Source: {fileID: 0}
+  Attack: 9
+  Health: 9
+  Warcry: {fileID: 0}
+  Lastword: {fileID: 0}

@@ -243,6 +243,19 @@ public class BattleMaid : MonoBehaviour
         return res;
     }
 
+    public Player GetOpponentPlayer(Player p)
+    {
+        if (p == SelfPlayer)
+        {
+            return OpponentPlayer;
+        }
+        else if (p == OpponentPlayer)
+        {
+            return SelfPlayer;
+        }
+        return null;
+    }
+
     public void ClearSetTargetable()
     {
         ClearSetTargetable(SelfPlayer);
@@ -296,6 +309,11 @@ public class BattleMaid : MonoBehaviour
             break;
         case CommandMaid.State.Summon:
             maid.Owner.SummonCard(maid);
+            MonsterCardData m = maid.Data as MonsterCardData;
+            if (m.Warcry != null)
+            {
+                m.Warcry.Cast(maid.Owner, maid);
+            }
             break;
         }
         maid.Owner.UpdateState();

@@ -9,6 +9,10 @@ public class MonsterCardData : CardData
     public int Attack = 0;
     public int Health = 0;
 
+    [Header("Ability")]
+    public Ability Warcry;
+    public Ability Lastword;
+
     public override CardType Type
     {
         get

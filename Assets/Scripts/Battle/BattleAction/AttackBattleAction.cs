@@ -12,7 +12,7 @@ public class AttackBattleAction : BattleAction
         HeroWeapon = (1 << 2),
         Counter = (1 << 3),
         CanBeCounter = (1 << 4),
-        Preserved2 = (1 << 5),
+        Ability = (1 << 5),
         Preserved3 = (1 << 6),
         Preserved4 = (1 << 7),
         Preserved5 = (1 << 8),

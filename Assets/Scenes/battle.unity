@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 845343823}
   ManaText: {fileID: 2136976154}
   AttackText: {fileID: 305502541}
@@ -588,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 2111733134}
   ManaText: {fileID: 1583473269}
   AttackText: {fileID: 1418550493}
@@ -2565,7 +2565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 650560134}
   ManaText: {fileID: 665221123}
   AttackText: {fileID: 792874080}
@@ -2781,7 +2781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 2035857036}
   ManaText: {fileID: 1689825865}
   AttackText: {fileID: 2140767136}
@@ -3082,7 +3082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 59445302}
   ManaText: {fileID: 1774941291}
   AttackText: {fileID: 1737941676}
@@ -3490,7 +3490,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1231766613}
   ManaText: {fileID: 1264785922}
   AttackText: {fileID: 734022036}
@@ -5569,7 +5569,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1511348950}
   ManaText: {fileID: 1751023840}
   AttackText: {fileID: 1127673064}
@@ -5753,13 +5753,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CardList:
   - Key: 9
-    Value: {fileID: 11400000, guid: 634f510567a29954caac3b78a57f3f88, type: 2}
+    Value: {fileID: 11400000, guid: 80167d4179b6bc24f94f9aaa15d484f7, type: 2}
   - Key: Reisen
-    Value: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+    Value: {fileID: 11400000, guid: c704c0cf8aed884478953ff318c0ab68, type: 2}
   - Key: Rumia
-    Value: {fileID: 11400000, guid: 0dc71808f7f070f4daf3d6819be7b45c, type: 2}
+    Value: {fileID: 11400000, guid: af7a3f69d8980954c868e7ef5385457a, type: 2}
   - Key: Tewi
-    Value: {fileID: 11400000, guid: 5dac46e445ca56840b151208fda5adee, type: 2}
+    Value: {fileID: 11400000, guid: b2253c98b9db2c6489736f0f0df5ebd5, type: 2}
 --- !u!224 &583506275
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5828,7 +5828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1412732958}
   ManaText: {fileID: 1077532138}
   AttackText: {fileID: 803838351}
@@ -7559,7 +7559,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1703217506}
   ManaText: {fileID: 1401759118}
   AttackText: {fileID: 1507898134}
@@ -8217,7 +8217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1844110455}
   ManaText: {fileID: 1426638801}
   AttackText: {fileID: 1518922993}
@@ -9019,7 +9019,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 577767076}
   ManaText: {fileID: 1391380628}
   AttackText: {fileID: 1980615800}
@@ -10152,7 +10152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1364575782}
   ManaText: {fileID: 1868305847}
   AttackText: {fileID: 385442054}
@@ -11353,7 +11353,7 @@ Prefab:
     - target: {fileID: 224567926626589570, guid: c38b83a1fe3104d449e2dca8673ba436,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -28
       objectReference: {fileID: 0}
     - target: {fileID: 224567926626589570, guid: c38b83a1fe3104d449e2dca8673ba436,
         type: 2}
@@ -12637,7 +12637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 887972614}
   ManaText: {fileID: 1876952312}
   AttackText: {fileID: 922832842}
@@ -15127,7 +15127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 14638729}
   ManaText: {fileID: 1181221109}
   AttackText: {fileID: 2048527473}
@@ -15545,7 +15545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1357067973}
   ManaText: {fileID: 806704338}
   AttackText: {fileID: 16587163}
@@ -16528,7 +16528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1807775750}
   ManaText: {fileID: 690066070}
   AttackText: {fileID: 72853905}
@@ -17240,7 +17240,7 @@ Prefab:
     - target: {fileID: 224040497473949224, guid: 708798dd0abc10844b276ea0c272c7d7,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 224040497473949224, guid: 708798dd0abc10844b276ea0c272c7d7,
         type: 2}
@@ -19962,7 +19962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 722952012}
   ManaText: {fileID: 247634590}
   AttackText: {fileID: 497605219}
@@ -22137,7 +22137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 75273017}
   ManaText: {fileID: 1183606487}
   AttackText: {fileID: 1270581162}
@@ -22196,7 +22196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d952ecaa8c2a25d4b94cf89f3fe0ef1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Data: {fileID: 11400000, guid: 0c990331102a64c4d9c721d79465de75, type: 2}
+  Data: {fileID: 0}
   DescText: {fileID: 1693817620}
   ManaText: {fileID: 1870801714}
   AttackText: {fileID: 1350396774}

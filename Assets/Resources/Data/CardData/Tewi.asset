@@ -9,19 +9,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a20ceb01605d5774da4d14b86ecabae4, type: 3}
-  m_Name: NewMonsterCard 1
+  m_Name: Tewi
   m_EditorClassIdentifier: 
-  Type: 0
-  Description: 
-  Mana: 1
-  Attack: 0
-  Health: 0
-  Ability: 0
-  CardImage: {fileID: 0}
+  Description: "\u885D\u523A"
+  Mana: 2
+  Ability: 2
+  CardImage: {fileID: 2800000, guid: 0f83cddde90608843b082356846961fb, type: 3}
   UV:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
+    x: 0.2
+    y: 0.62
+    width: 0.56250006
+    height: 0.33
   Source: {fileID: 0}
+  Attack: 1
+  Health: 3
+  Warcry: {fileID: 0}
+  Lastword: {fileID: 0}
