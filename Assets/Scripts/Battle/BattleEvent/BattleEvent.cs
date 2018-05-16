@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Ability : ScriptableObject
+public abstract class BattleEvent
 {
     protected bool finished = false;
 
@@ -14,5 +14,5 @@ public abstract class Ability : ScriptableObject
         }
     }
 
-    public abstract void Cast(ICaster caster);
+    public abstract void Execute();
 }

@@ -25,4 +25,4 @@ MonoBehaviour:
   Attack: 2
   Health: 1
   Warcry: {fileID: 11400000, guid: c885c8ccaa509884cae45ad728d39162, type: 2}
-  Lastword: {fileID: 0}
+  Lastword: {fileID: 11400000, guid: 8e304a890647ba34797fadd9f77e992e, type: 2}

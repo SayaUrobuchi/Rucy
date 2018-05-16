@@ -7,13 +7,14 @@ public class DamageAbility : TargetableAbility
 {
     public int Damage = 1;
 
-    public override void Cast(Player owner, BattleCardMaid caster)
+    public override void Cast(ICaster caster)
     {
-        TargetSelector.Eval(owner);
+        TargetSelector.Eval(caster);
         List<ITargetable> res = TargetSelector.Result;
         if (res.Count > 0)
         {
             res[0].ApplyDamage(Damage, AttackBattleAction.DamageType.Ability);
         }
+        finished = true;
     }
 }

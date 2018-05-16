@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
+public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker, ICaster
 {
     public CardData Data;
 
@@ -152,6 +152,17 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
         sleeping = true;
     }
 
+    public void OnDeath()
+    {
+        animateTimer = 1.5f;
+        owner.MoveCardToTomb(this);
+        MonsterCardData mc = Data as MonsterCardData;
+        if (mc != null && mc.Lastword != null)
+        {
+            BattleMaid.Summon.AddBattleEvent(new AbilityBattleEvent(mc.Lastword, this));
+        }
+    }
+
     private void Refresh()
     {
         DescText.text = Data.Description;
@@ -191,8 +202,7 @@ public class BattleCardMaid : MonoBehaviour, ITargetable, IAttacker
     {
         if (hp <= 0)
         {
-            animateTimer = 1.5f;
-            owner.MoveCardToTomb(this);
+            OnDeath();
         }
     }
     #endregion

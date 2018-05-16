@@ -27,9 +27,13 @@ public abstract class TargetSelector
 
         Hero = (1 << 14), 
 
+        /*
         AllCardPosition = (Hand | Tomb | Field | CardPool), 
         AllSide = (TopSide | BottomSide), 
         AllCardType = (Monster | Spell), 
+
+        C_EnemyMonster = (Monster | Field | Opponent), 
+        */
     }
 
     private List<ITargetable> result;
@@ -55,8 +59,9 @@ public abstract class TargetSelector
         return target.TargetableJudge(RangeMask);
     }
 
-    public List<ITargetable> Eval(Player p)
+    public List<ITargetable> Eval(IBattler b)
     {
+        Player p = b.Owner;
         List<ITargetable> res = new List<ITargetable>();
         List<ITargetable> all = new List<ITargetable>();
         Range t = RangeMask;

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Name: DamageAbility
   m_EditorClassIdentifier: 
   TargetSelector:
-    TargetRange: 16930
+    TargetRange: 36882
     Selectable: 0
   Damage: 1

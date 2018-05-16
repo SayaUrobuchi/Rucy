@@ -70,6 +70,7 @@ public class BattleMaid : MonoBehaviour
     private CommandMaid.State currentCmd;
     private TargetSelector currentSelector;
     private CommandMaid[] commands = new CommandMaid[MaxCommand];
+    private Queue<BattleEvent> events = new Queue<BattleEvent>();
 
     public BattleCardMaid CurrentSelectedCard
     {
@@ -115,6 +116,18 @@ public class BattleMaid : MonoBehaviour
             state = State.TurnAction;
             break;
         case State.TurnAction:
+            if (currentCmd == CommandMaid.State.None)
+            {
+                if (events.Count > 0)
+                {
+                    BattleEvent e = events.Peek();
+                    e.Execute();
+                    if (e.IsFinished)
+                    {
+                        events.Dequeue();
+                    }
+                }
+            }
             break;
         case State.TurnEnd:
             currentTurn = (currentTurn == Turn.Self ? Turn.Opponent : Turn.Self);
@@ -196,6 +209,11 @@ public class BattleMaid : MonoBehaviour
         return maid;
     }
 
+    public void AddBattleEvent(BattleEvent e)
+    {
+        events.Enqueue(e);
+    }
+
     public bool IsSummonPossible(Player p, BattleCardMaid c)
     {
         return p.CurrentMana >= c.CostMana;
@@ -271,23 +289,34 @@ public class BattleMaid : MonoBehaviour
         }
     }
 
+    public bool IsCommandPossible(BattleCardMaid maid, CommandMaid.State cmd)
+    {
+        if (cmd == CommandMaid.State.TurnEnd)
+        {
+            return currentTurn == Turn.Self;
+        }
+        if (maid == null || cmd == CommandMaid.State.None)
+        {
+            return false;
+        }
+        return events.Count == 0 && currentTurn == maid.Owner.Side;
+    }
+
     public void CommandExecute(BattleCardMaid maid, CommandMaid.State cmd)
     {
         if (maid == null)
         {
             maid = CurrentSelectedCard;
         }
-        if (cmd == CommandMaid.State.TurnEnd)
-        {
-            EndTurn();
-            return;
-        }
-        if (maid == null || cmd == CommandMaid.State.None)
+        if (!IsCommandPossible(maid, cmd))
         {
             return;
         }
         switch (cmd)
         {
+        case CommandMaid.State.TurnEnd:
+            AddBattleEvent(new TurnEndBattleEvent());
+            break;
         case CommandMaid.State.Cancel:
             {
                 currentCmd = CommandMaid.State.None;
@@ -298,7 +327,7 @@ public class BattleMaid : MonoBehaviour
         case CommandMaid.State.Attack:
             currentCmd = CommandMaid.State.Attacking;
             currentSelector = new MonsterAttackTargetSelector();
-            List<ITargetable> targets = currentSelector.Eval(maid.Owner);
+            List<ITargetable> targets = currentSelector.Eval(maid);
             for (int i = 0; i < targets.Count; i++)
             {
                 targets[i].SetTargetable();
@@ -312,14 +341,17 @@ public class BattleMaid : MonoBehaviour
             MonsterCardData m = maid.Data as MonsterCardData;
             if (m.Warcry != null)
             {
-                m.Warcry.Cast(maid.Owner, maid);
+                AddBattleEvent(new AbilityBattleEvent(m.Warcry, maid));
             }
             break;
         }
-        maid.Owner.UpdateState();
-        if (maid == CurrentSelectedCard)
+        if (maid != null)
         {
-            SetCommand(maid);
+            maid.Owner.UpdateState();
+            if (maid == CurrentSelectedCard)
+            {
+                SetCommand(maid);
+            }
         }
     }
 

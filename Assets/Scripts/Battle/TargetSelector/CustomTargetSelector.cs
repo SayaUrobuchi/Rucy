@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class CustomTargetSelector : TargetSelector
 {
-    [EnumMask(typeof(TargetSelector.Range))]
+    [EnumMask(typeof(Range))]
     public Range TargetRange;
     public bool Selectable;
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface ITargetable
+public interface ITargetable : IBattler
 {
     void ApplyDamage(int dmg, AttackBattleAction.DamageType type = 0);
     void ApplyHeal(int heal, int type = 0);
